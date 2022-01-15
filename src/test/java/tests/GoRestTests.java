@@ -1,3 +1,9 @@
+package tests;
+
+import models.CommentData;
+import models.Data;
+import models.PostData;
+import models.ToDoData;
 import org.json.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -67,11 +73,17 @@ public class GoRestTests {
 
         String emailStr = "holt"+ System.currentTimeMillis()+"@faker.com";
 //        String reqBody = "{\"name\":\"John Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "John Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "John Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender( "male");
+        reqBody.setEmail( emailStr);
+        reqBody.setStatus("active");
 
         String resBody =
                 requestSpecification.body(reqBody).when().post("/users").then().assertThat().statusCode(201).log().all().extract().response().asString();
@@ -79,11 +91,10 @@ public class GoRestTests {
         JSONObject jsonObj = new JSONObject(resBody);
         JSONObject data = jsonObj.getJSONObject("data");
 
-        Assert.assertEquals("John Holt", data.getString("name"));
-        String testEmailStr = emailStr.replace("\"", "");
-        Assert.assertEquals(testEmailStr, data.getString("email"));
-        Assert.assertEquals("male", data.getString("gender"));
-        Assert.assertEquals("active", data.getString("status"));
+        Assert.assertEquals(reqBody.getName(), data.getString("name"));
+        Assert.assertEquals(reqBody.getEmail(), data.getString("email"));
+        Assert.assertEquals(reqBody.getGender(), data.getString("gender"));
+        Assert.assertEquals(reqBody.getStatus(), data.getString("status"));
 
     }
 
@@ -97,11 +108,18 @@ public class GoRestTests {
     public void getUserByID(){
         String emailStr = "holt"+ System.currentTimeMillis()+"@faker.com";
 //        String reqBody = "{\"name\":\"John Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "John Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "John Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender( "male");
+        reqBody.setEmail( emailStr);
+        reqBody.setStatus("active");
+
+
         String resBody =
                 requestSpecification.body(reqBody).when().post("/users").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
@@ -117,11 +135,10 @@ public class GoRestTests {
         data = jsonObj.getJSONObject("data");
 
         Assert.assertEquals(userID, data.getInt("id"));
-        Assert.assertEquals("John Holt", data.getString("name"));
-        String testEmailStr = emailStr.replace("\"", "");
-        Assert.assertEquals(testEmailStr, data.getString("email"));
-        Assert.assertEquals("male", data.getString("gender"));
-        Assert.assertEquals("active", data.getString("status"));
+        Assert.assertEquals(reqBody.getName(), data.getString("name"));
+        Assert.assertEquals(reqBody.getEmail(), data.getString("email"));
+        Assert.assertEquals(reqBody.getGender(), data.getString("gender"));
+        Assert.assertEquals(reqBody.getStatus(), data.getString("status"));
 
     }
 
@@ -131,11 +148,17 @@ public class GoRestTests {
 
 //        String reqBody = "{\"name\":\"Chase Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status" +
 //                "\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "Chase Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "Chase Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender( "male");
+        reqBody.setEmail( emailStr);
+        reqBody.setStatus("active");
 
             String resBody=
                     requestSpecification.body
@@ -152,11 +175,17 @@ public class GoRestTests {
     public void updateUserExists(){
         String emailStr = "holt"+ System.currentTimeMillis()+"@faker.com";
 //        String reqBody = "{\"name\":\"John Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "John Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "John Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender("male");
+        reqBody.setEmail(emailStr);
+        reqBody.setStatus("active");
 
         String resBody =
                 requestSpecification.body(reqBody).when().post("/users").then().assertThat().statusCode(201).log().all().extract().response().asString();
@@ -168,20 +197,20 @@ public class GoRestTests {
 
 
 //      reqBody ="{\"name\":\"Chasie Holt\", \"gender\":\"female\",\"status\":\"active\"}";
-        reqBody = new HashMap<>();
-        reqBody.put("name", "Chasie Holt");
-        reqBody.put("gender", "female");
-        reqBody.put("status", "active");
+        reqBody = new Data();
+        reqBody.setName("Chasie Holt");
+        reqBody.setEmail(emailStr);
+        reqBody.setGender("female");
+        reqBody.setStatus("active");
 
         resBody =
-               requestSpecification.body(reqBody).when().patch("/users/" + userID).then().assertThat().statusCode(200).log().all().extract().response().asString();
+               requestSpecification.body(reqBody).when().put("/users/" + userID).then().assertThat().statusCode(200).log().all().extract().response().asString();
         JSONObject updatedJson = new JSONObject(resBody);
         data = updatedJson.getJSONObject("data");
-        Assert.assertEquals("Chasie Holt", data.getString("name"));
-        String testEmailStr = emailStr.replace("\"", "");
-        Assert.assertEquals(testEmailStr, data.getString("email"));
-        Assert.assertEquals("female", data.getString("gender"));
-        Assert.assertEquals("active", data.getString("status"));
+        Assert.assertEquals(reqBody.getName(), data.getString("name"));
+        Assert.assertEquals(reqBody.getEmail(), data.getString("email"));
+        Assert.assertEquals(reqBody.getGender(), data.getString("gender"));
+        Assert.assertEquals(reqBody.getStatus(), data.getString("status"));
 
     }
 
@@ -200,11 +229,19 @@ public class GoRestTests {
     public void deleteUser(){
         String emailStr = "holt"+ System.currentTimeMillis()+"@faker.com";
 //        String reqBody = "{\"name\":\"John Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "John Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "John Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender( "male");
+        reqBody.setEmail( emailStr);
+        reqBody.setStatus("active");
+
+
         String resBody =
                 requestSpecification.body(reqBody).when().post("/users").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
@@ -222,11 +259,17 @@ public class GoRestTests {
 
         String emailStr = "holt"+ System.currentTimeMillis()+"@faker.com";
 //        String reqBody = "{\"name\":\"John Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "John Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "John Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender( "male");
+        reqBody.setEmail( emailStr);
+        reqBody.setStatus("active");
 
         String resBody =
                 requestSpecification.body(reqBody).when().post("/users").then().assertThat().statusCode(201).log().all().extract().response().asString();
@@ -237,30 +280,40 @@ public class GoRestTests {
         int userID = data.getInt("id");
 
 //        reqBody = "{\"title\": \"Testing Post Title\", \"body\":\"Here is a little body\"}";
-        reqBody = new HashMap<>();
-        reqBody.put("title", "Testing Post Title");
-        reqBody.put("body", "Here is a little body");
+////        reqBody = new HashMap<>();
+////        reqBody.put("title", "Testing Post Title");
+////        reqBody.put("body", "Here is a little body");
+
+        PostData postBody = new PostData();
+        postBody.setTitle("Testing Post Title");
+        postBody.setBody("Here is a little body");
 
 
         resBody =
-                requestSpecification.body(reqBody).when().post("/users/"+ userID +"/posts").then().assertThat().statusCode(201).log().all().extract().response().asString();
+                requestSpecification.body(postBody).when().post("/users/"+ userID +"/posts").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
             jsonObj = new JSONObject(resBody);
             data = jsonObj.getJSONObject("data");
 
-            Assert.assertEquals("Testing Post Title", data.getString("title"));
-            Assert.assertEquals("Here is a little body", data.getString("body"));
+            Assert.assertEquals(postBody.getTitle(), data.getString("title"));
+            Assert.assertEquals(postBody.getBody(), data.getString("body"));
     }
 
     @Test
     public void getAUsersPosts(){
         String emailStr = "holt"+ System.currentTimeMillis()+"@faker.com";
 //        String reqBody = "{\"name\":\"John Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "John Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "John Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender( "male");
+        reqBody.setEmail( emailStr);
+        reqBody.setStatus("active");
 
         String resBody =
                 requestSpecification.body(reqBody).when().post("/users").then().assertThat().statusCode(201).log().all().extract().response().asString();
@@ -271,12 +324,16 @@ public class GoRestTests {
         int userID = data.getInt("id");
 
 //        reqBody = "{\"title\": \"Testing Post Title\", \"body\":\"Here is a little body\"}";
-        reqBody = new HashMap<>();
-        reqBody.put("title", "Testing Post Title");
-        reqBody.put("body", "Here is a little body");
+//        reqBody = new HashMap<>();
+//        reqBody.put("title", "Testing Post Title");
+//        reqBody.put("body", "Here is a little body");
+
+        PostData postBody = new PostData();
+        postBody.setTitle("Testing Post Title");
+        postBody.setBody("Here is a little body");
 
         resBody =
-                requestSpecification.body(reqBody).when().post("/users/"+ userID +"/posts").then().assertThat().statusCode(201).log().all().extract().response().asString();
+                requestSpecification.body(postBody).when().post("/users/"+ userID +"/posts").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
         resBody=
                requestSpecification.when().get("/users/"+ userID +"/posts").then().assertThat().statusCode(200).log().all().extract().response().asString();
@@ -287,11 +344,17 @@ public class GoRestTests {
 
         String emailStr = "holt"+ System.currentTimeMillis()+"@faker.com";
 //        String reqBody = "{\"name\":\"John Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "John Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "John Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender( "male");
+        reqBody.setEmail( emailStr);
+        reqBody.setStatus("active");
 
         String resBody =
                 requestSpecification.body(reqBody).when().post("/users").then().assertThat().statusCode(201).log().all().extract().response().asString();
@@ -302,12 +365,15 @@ public class GoRestTests {
         int userID = data.getInt("id");
 
 //        reqBody = "{\"title\": \"Testing Post Title\", \"body\":\"Here is a little body\"}";
-        reqBody = new HashMap<>();
-        reqBody.put("title", "Testing Post Title");
-        reqBody.put("body", "Here is a little body");
+//        reqBody = new HashMap<>();
+//        reqBody.put("title", "Testing Post Title");
+//        reqBody.put("body", "Here is a little body");
+        PostData postBody = new PostData();
+        postBody.setTitle("Testing Post Title");
+        postBody.setBody("Here is a little body");
 
         resBody =
-                requestSpecification.body(reqBody).when().post("/users/"+ userID +"/posts").then().assertThat().statusCode(201).log().all().extract().response().asString();
+                requestSpecification.body(postBody).when().post("/users/"+ userID +"/posts").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
         jsonObj = new JSONObject(resBody);
         data = jsonObj.getJSONObject("data");
@@ -315,20 +381,24 @@ public class GoRestTests {
         int postID = data.getInt("id");
 
 //        reqBody = "{\"name\": \"Sara Rose\", \"email\": \"sara@rose.com\", \"body\": \"Here is a comment body\"}";
-        reqBody = new HashMap<>();
-        reqBody.put("name", "Sara Rose");
-        reqBody.put("email", "sara@rose.com");
-        reqBody.put("body", "Here is a comment body");
+//        reqBody = new HashMap<>();
+//        reqBody.put("name", "Sara Rose");
+//        reqBody.put("email", "sara@rose.com");
+//        reqBody.put("body", "Here is a comment body");
+        CommentData commentBody = new CommentData();
+        commentBody.setName("Sara Rose");
+        commentBody.setEmail("sara@rose.com");
+        commentBody.setBody("Here is a comment body");
 
         resBody =
-                requestSpecification.body(reqBody).when().post("/posts/" + postID+ "/comments").then().assertThat().statusCode(201).log().all().extract().response().asString();
+                requestSpecification.body(commentBody).when().post("/posts/" + postID+ "/comments").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
         jsonObj = new JSONObject(resBody);
         data = jsonObj.getJSONObject("data");
 
-        Assert.assertEquals("Sara Rose", data.getString("name"));
-        Assert.assertEquals("sara@rose.com", data.getString("email"));
-        Assert.assertEquals("Here is a comment body", data.getString("body"));
+        Assert.assertEquals(commentBody.getName(), data.getString("name"));
+        Assert.assertEquals(commentBody.getEmail(), data.getString("email"));
+        Assert.assertEquals(commentBody.getBody(), data.getString("body"));
 
     }
 
@@ -337,11 +407,17 @@ public class GoRestTests {
 
         String emailStr = "holt"+ System.currentTimeMillis()+"@faker.com";
 //        String reqBody = "{\"name\":\"John Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "John Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "John Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender( "male");
+        reqBody.setEmail( emailStr);
+        reqBody.setStatus("active");
 
         String resBody =
                 requestSpecification.body(reqBody).when().post("/users").then().assertThat().statusCode(201).log().all().extract().response().asString();
@@ -352,12 +428,15 @@ public class GoRestTests {
         int userID = data.getInt("id");
 
 //        reqBody = "{\"title\": \"Testing Post Title\", \"body\":\"Here is a little body\"}";
-        reqBody = new HashMap<>();
-        reqBody.put("title", "Testing Post Title");
-        reqBody.put("body", "Here is a little body");
+//        reqBody = new HashMap<>();
+//        reqBody.put("title", "Testing Post Title");
+//        reqBody.put("body", "Here is a little body");
+        PostData postBody = new PostData();
+        postBody.setTitle("Testing Post Title");
+        postBody.setBody("Here is a little body");
 
         resBody =
-                requestSpecification.body(reqBody).when().post("/users/"+ userID +"/posts").then().assertThat().statusCode(201).log().all().extract().response().asString();
+                requestSpecification.body(postBody).when().post("/users/"+ userID +"/posts").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
         jsonObj = new JSONObject(resBody);
         data = jsonObj.getJSONObject("data");
@@ -365,13 +444,18 @@ public class GoRestTests {
         int postID = data.getInt("id");
 
 //        reqBody = "{\"name\": \"Sara Rose\", \"email\": \"sara@rose.com\", \"body\": \"Here is a comment body\"}";
-        reqBody = new HashMap<>();
-        reqBody.put("name", "Sara Rose");
-        reqBody.put("email", "sara@rose.com");
-        reqBody.put("body", "Here is a comment body");
+//        reqBody = new HashMap<>();
+//        reqBody.put("name", "Sara Rose");
+//        reqBody.put("email", "sara@rose.com");
+//        reqBody.put("body", "Here is a comment body");
+
+        CommentData commentBody = new CommentData();
+        commentBody.setName("Sara Rose");
+        commentBody.setEmail("sara@rose.com");
+        commentBody.setBody("here is a comment body");
 
         resBody =
-                requestSpecification.body(reqBody).when().post("/posts/" + postID+ "/comments").then().assertThat().statusCode(201).log().all().extract().response().asString();
+                requestSpecification.body(commentBody).when().post("/posts/" + postID+ "/comments").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
 
         resBody =
@@ -382,11 +466,17 @@ public class GoRestTests {
     public void createToDo(){
         String emailStr = "holt"+ System.currentTimeMillis()+"@faker.com";
 //        String reqBody = "{\"name\":\"John Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "John Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "John Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender( "male");
+        reqBody.setEmail( emailStr);
+        reqBody.setStatus("active");
 
         String resBody =
                 requestSpecification.body(reqBody).when().post("/users").then().assertThat().statusCode(201).log().all().extract().response().asString();
@@ -397,18 +487,22 @@ public class GoRestTests {
         int userID = data.getInt("id");
 
 //        reqBody = "{\"title\": \"Testing ToDo Title\", \"status\":\"pending\"}";
-        reqBody = new HashMap<>();
-        reqBody.put("title", "Testing ToDo Title");
-        reqBody.put("status", "pending");
+//        reqBody = new HashMap<>();
+//        reqBody.put("title", "Testing ToDo Title");
+//        reqBody.put("status", "pending");
+
+        ToDoData toDoBody = new ToDoData();
+        toDoBody.setTitle("Testing ToDo Title");
+        toDoBody.setStatus("pending");
 
         resBody =
-                requestSpecification.body(reqBody).when().post("/users/"+ userID +"/todos").then().assertThat().statusCode(201).log().all().extract().response().asString();
+                requestSpecification.body(toDoBody).when().post("/users/"+ userID +"/todos").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
         jsonObj = new JSONObject(resBody);
         data = jsonObj.getJSONObject("data");
 
-        Assert.assertEquals("Testing ToDo Title", data.getString("title"));
-        Assert.assertEquals("pending", data.getString("status"));
+        Assert.assertEquals(toDoBody.getTitle(), data.getString("title"));
+        Assert.assertEquals(toDoBody.getStatus(), data.getString("status"));
     }
 
 
@@ -416,11 +510,18 @@ public class GoRestTests {
     public void getTodo(){
         String emailStr = "holt"+ System.currentTimeMillis()+"@faker.com";
 //        String reqBody = "{\"name\":\"John Holt\", \"gender\":\"male\", \"email\":"+emailStr+",\"status\":\"active\"}";
-        HashMap<String, Object> reqBody = new HashMap<>();
-        reqBody.put("name", "John Holt");
-        reqBody.put("gender", "male");
-        reqBody.put("email", emailStr);
-        reqBody.put("status", "active");
+//        HashMap<String, Object> reqBody = new HashMap<>();
+//        reqBody.put("name", "John Holt");
+//        reqBody.put("gender", "male");
+//        reqBody.put("email", emailStr);
+//        reqBody.put("status", "active");
+
+        Data reqBody = new Data();
+        reqBody.setName("John Holt");
+        reqBody.setGender( "male");
+        reqBody.setEmail( emailStr);
+        reqBody.setStatus("active");
+
         String resBody =
                 requestSpecification.body(reqBody).when().post("/users").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
@@ -430,12 +531,15 @@ public class GoRestTests {
         int userID = data.getInt("id");
 
 
-        reqBody = new HashMap<>();
-        reqBody.put("title", "Testing ToDo Title");
-        reqBody.put("due_on", null);
-        reqBody.put("status", "pending");
+//        reqBody = new HashMap<>();
+//        reqBody.put("title", "Testing ToDo Title");
+//        reqBody.put("status", "pending");
+
+        ToDoData toDoBody = new ToDoData();
+        toDoBody.setTitle("Testing ToDo Title");
+        toDoBody.setStatus("pending");
         resBody =
-                requestSpecification.body(reqBody).when().post("/users/"+ userID +"/todos").then().assertThat().statusCode(201).log().all().extract().response().asString();
+                requestSpecification.body(toDoBody).when().post("/users/"+ userID +"/todos").then().assertThat().statusCode(201).log().all().extract().response().asString();
 
        jsonObj = new JSONObject(resBody);
        data = jsonObj.getJSONObject("data");
